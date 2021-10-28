@@ -19,49 +19,19 @@
     </div>
 
 
-
-
-
     <script>
-        fetch("https://striveschool-api.herokuapp.com/books")
+        let cardContainer = document.getElementsByClassName("container")
+        fetch("https: //striveschool-api.herokuapp.com/books")
+            .then(resp => resp.json())
+            .then(books => books.forEach(element => {
 
-        .then((response) => response.json())
-            //DOM manipulation
-            .then((body) => {
-                console.log(body)
-                const row = document.querySelector(".row")
-                for (let i = 0; i < body.lenght; i++) {
-                    const books = body[i]
-                    const col = document.createElement("div")
-                    col.className = "col-4"
-                    col.innerHTML = `
-                        <div class="col-4">
-                            <div class="card mb-4 shadow-sm">
-                                <img src="${books.img}" class="img-card">
-                                <div class="card-body">
-                                    <p class="card-text">
-                                        <title>${books.title}</title>
-                                    </p>
-                                    <div class="btn-group">
-                                        <a href="#" class="btn btn-primary">Add to cart</a>
-                                    </div>
-                                </div>
+                let src = element.img;
 
-                            </div>
-                        </div>
-                        <small class="text-muted">${books.category}</small>
-                    </div>
-                </div>
-            </div>
-        </div>;`
-                    row.appendChild(col);
-                }
-            })
 
-        window.onload = () => {
 
-        }
+            }))
     </script>
+
 
 
 
