@@ -2,16 +2,17 @@ const bookWrapper = document.querySelector('#card-Container')
 const cartList = document.querySelector('#cartList')
 window.onload = () =>{
     loadBooks()
-    displayBooks()
+    
     displaySelectedCard()
-  
+    removeBook()
+    countCard()
 }
 let loadedBooks = []
-let shoppingCartList = []
+let shoppingCartList = [] // working fine i can display selected cards on console screen
 let filteredBooks = []
 
     const loadBooks = ()=>{
-        let cardRow = document.getElementById("card-Container")
+        //let cardRow = document.getElementById("card-Container")
         fetch("https://striveschool-api.herokuapp.com/books")
         .then(response => response.json())
         .then((receivedData) => {
@@ -22,7 +23,7 @@ let filteredBooks = []
         .catch((error) => console.log(error.message))
     }
     
-    const displayBooks = (receivedData = loadedBooks) =>{
+    const displayBooks = (receivedData = loadedBooks) =>{//working fine
         bookWrapper.innerHTML =''
         receivedData.forEach((book) =>{
             bookWrapper.innerHTML += 
@@ -33,8 +34,8 @@ let filteredBooks = []
                     <div class="card-body">
                         <h5 class="card-title">${book.title}</h5>
                         <p class="card-text">Price: ${book.price} $</p>
-                        <button id='add-to-cart' onclick="addToCart('${ String(book.asin) }', this)" onclick ='secondClick()'class='btn btn-info'>Add to card</button>
-                        <button id ='deleteBtn'class='btn btn-info'>Skip</button>
+                        <button id='add-to-cart' onclick="addToCart('${ String(book.asin) }', this)" class='btn btn-info'>Add to card</button>
+                        <button id ='deleteBtn' onclick="removeBook(event)" class='btn btn-info'>Skip</button>
                     </div>
                 </div>
             </div>       
@@ -42,16 +43,20 @@ let filteredBooks = []
        })
        
     }
-    
-    const addToCart = (asin, clicedBtn) =>{
-        const addedbooks = loadedBooks.find((book)=>book.asin === asin)
-        shoppingCartList.push(addedbooks)
-        console.log(shoppingCartList)
-        let styling = document.querySelector('#main-card')
-        styling.style.border = '1px solid red'
+
+    const addToCart = (asin) =>{
+        const addedbooks = loadedBooks.find((book)=>book.asin == asin)
+        if(!shoppingCartList.includes(addedbooks)){//preventing add the same item in the list
+            shoppingCartList.push(addedbooks)
+            console.log(shoppingCartList)
+        }
+        if(shoppingCartList.length !=0){
+            let styling = document.querySelector('#main-card')
+            styling.style.border = '1px solid red' //1 problem is here
+        }
     }
 
-    const displaySelectedCard = () =>{
+    const displaySelectedCard = () =>{ //another problem
         let grabSelector = document.querySelector('#detail-page')
         shoppingCartList.forEach((list) =>{
             grabSelector.innerHTML +=`
@@ -70,7 +75,7 @@ let filteredBooks = []
         })
     }
 
-    const searchBooks = (query) =>{
+    const searchBooks = (query) =>{ //working fine
         if (query.length < 3) {
             filteredBooks = loadedBooks
             displayBooks()
@@ -82,8 +87,19 @@ let filteredBooks = []
         }
        
     }
-    const removeBook = () =>{
+
+    const removeBook = (event) =>{
         let getButton = document.querySelector('#deleteBtn')
-
-
+        getButton.addEventListener('click', (event)=>{
+            let grabCard = document.querySelector('#main-card')
+            grabCard.classList.add('d-none')
+        })
     }
+
+    const countCard = (loadedBooks) =>{
+        return loadedBooks.length
+    }
+    
+    /* const hidePics = (event) => {
+        event.path[4].remove()
+      } */
