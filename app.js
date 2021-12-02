@@ -34,7 +34,7 @@ let filteredBooks = []
                         <h5 class="card-title">${book.title}</h5>
                         <p class="card-text">Price: ${book.price} $</p>
                         <button id='add-to-cart' onclick="addToCart('${ String(book.asin) }', this)" onclick ='secondClick()'class='btn btn-info'>Add to card</button>
-                        <button class='btn btn-info'>Skip</button>
+                        <button id ='deleteBtn'class='btn btn-info'>Skip</button>
                     </div>
                 </div>
             </div>       
@@ -75,8 +75,15 @@ let filteredBooks = []
             filteredBooks = loadedBooks
             displayBooks()
             return
+        }else{
+            filteredBooks = loadedBooks.filter((book) => book.title.toLowerCase().includes(query.toLowerCase()))
+            console.log(filteredBooks)
+            displayBooks(filteredBooks)
         }
-        filteredBooks = loadedBooks.filter((book) => book.title.toLowerCase().includes(query.toLowerCase()))
-        console.log(filteredBooks)
-        displayBooks(filteredBooks)
+       
+    }
+    const removeBook = () =>{
+        let getButton = document.querySelector('#deleteBtn')
+
+
     }
